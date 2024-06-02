@@ -31,6 +31,7 @@ function handleSubmit(e: Event): void {
   }
 
   formElement?.reset();
+	if(submitButtonElement) submitButtonElement.disabled = true
 }
 
 function createTodo(data: Todo): HTMLLIElement | null {
