@@ -1,6 +1,6 @@
 type Todo = {
   name: string;
-  сompleted: boolean;
+  completed: boolean;
   date: Date;
 };
 
@@ -20,32 +20,39 @@ function handleSubmit(e: Event): void {
   if (inputElement && todoListElement) {
     const data: Todo = {
       name: inputElement?.value,
-      сompleted: false,
-      date: new Date()
+      completed: false,
+      date: new Date(),
     };
 
-    renderTodo(data, todoListElement)
+    renderTodo(data, todoListElement);
   }
 
-  formElement?.reset()
+  formElement?.reset();
 }
 
-function createTodo(data: Todo) {
+function createTodo(data: Todo): HTMLLIElement | null {
   const todoEleemnt: HTMLLIElement | null = templateElement?.cloneNode(
     true,
   ) as HTMLLIElement;
-  const todoNameElement =
-    todoEleemnt.querySelector<HTMLParagraphElement>('.task__name');
 
-  if (todoNameElement) {
-    todoNameElement.textContent = data.name;
+  if (todoEleemnt) {
+    const todoNameElement =
+      todoEleemnt.querySelector<HTMLParagraphElement>('.task__name');
+
+    if (todoNameElement) {
+      todoNameElement.textContent = data.name;
+    }
   }
 
   return todoEleemnt;
 }
 
 function renderTodo(data: Todo, container: HTMLUListElement) {
-  container.append(createTodo(data));
+  const todoElement = createTodo(data);
+  
+  if (todoElement) {
+    container.append(todoElement);
+  }
 }
 
 formElement?.addEventListener('submit', handleSubmit);
