@@ -37,6 +37,8 @@ function createTodo(data: Todo): HTMLLIElement | null {
   const todoEleemnt: HTMLLIElement | null = templateElement?.cloneNode(
     true,
   ) as HTMLLIElement;
+  const deleteButtonElement =
+    todoEleemnt.querySelector<HTMLButtonElement>('.task__delete');
 
   if (todoEleemnt) {
     const todoNameElement =
@@ -47,7 +49,23 @@ function createTodo(data: Todo): HTMLLIElement | null {
     }
   }
 
+	if (deleteButtonElement) {
+    deleteButtonElement.addEventListener('click', () => {
+      const todoItem = deleteButtonElement.closest('.task');
+			todoItem?.remove()
+			deleteTodo(data)
+    });
+  }
+
   return todoEleemnt;
+}
+
+function deleteTodo(todo: Todo): void {
+  const index = todos.findIndex(t => t.name === todo.name && t.date === todo.date);
+  if (index > -1) {
+    todos.splice(index, 1);
+    saveTodos(todos);
+  }
 }
 
 function renderTodo(data: Todo, container: HTMLUListElement) {
@@ -79,3 +97,8 @@ if (todoListElement) {
 }
 
 formElement?.addEventListener('submit', handleSubmit);
+inputElement?.addEventListener('input', () => {
+  if (submitButtonElement) {
+    submitButtonElement.disabled = inputElement.value.trim() === '';
+  }
+});
