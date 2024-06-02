@@ -13,6 +13,7 @@ const templateElement = document
   .querySelector<HTMLTemplateElement>('#template')
   ?.content.querySelector<HTMLLIElement>('.task');
 console.log(templateElement);
+const todos: Todo[] = loadTodos();
 
 function handleSubmit(e: Event): void {
   e.preventDefault();
@@ -25,6 +26,8 @@ function handleSubmit(e: Event): void {
     };
 
     renderTodo(data, todoListElement);
+    todos.push(data);
+    saveTodos(todos);
   }
 
   formElement?.reset();
@@ -49,10 +52,30 @@ function createTodo(data: Todo): HTMLLIElement | null {
 
 function renderTodo(data: Todo, container: HTMLUListElement) {
   const todoElement = createTodo(data);
-  
+
   if (todoElement) {
     container.append(todoElement);
   }
+}
+
+function saveTodos(todos: Todo[]): void {
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+function loadTodos(): Todo[] {
+  const todosJson = localStorage.getItem('todos');
+
+  if (todosJson) {
+    return JSON.parse(todosJson) as Todo[];
+  }
+
+  return [];
+}
+
+if (todoListElement) {
+  document.addEventListener('DOMContentLoaded', () => {
+    todos.forEach((todo) => renderTodo(todo, todoListElement));
+  });
 }
 
 formElement?.addEventListener('submit', handleSubmit);
