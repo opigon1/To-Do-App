@@ -1,4 +1,7 @@
+import { v4 as uuidv4 } from 'uuid';
+
 type Todo = {
+  id: string;
   name: string;
   completed: boolean;
   date: Date;
@@ -9,17 +12,21 @@ const submitButtonElement =
 const inputElement = document.querySelector<HTMLInputElement>('.input');
 const formElement = document.querySelector<HTMLFormElement>('.form');
 const todoListElement = document.querySelector<HTMLUListElement>('.task-list');
+const completedTodoListElement = document.querySelector<HTMLUListElement>(
+  '.complited-section__list',
+);
 const templateElement = document
   .querySelector<HTMLTemplateElement>('#template')
   ?.content.querySelector<HTMLLIElement>('.task');
-console.log(templateElement);
-const todos: Todo[] = loadTodos();
 
+const todos: Todo[] = loadTodos();
+console.log(todos);
 function handleSubmit(e: Event): void {
   e.preventDefault();
 
   if (inputElement && todoListElement) {
     const data: Todo = {
+      id: uuidv4(),
       name: inputElement?.value,
       completed: false,
       date: new Date(),
@@ -31,7 +38,7 @@ function handleSubmit(e: Event): void {
   }
 
   formElement?.reset();
-	if(submitButtonElement) submitButtonElement.disabled = true
+  if (submitButtonElement) submitButtonElement.disabled = true;
 }
 
 function createTodo(data: Todo): HTMLLIElement | null {
@@ -40,6 +47,8 @@ function createTodo(data: Todo): HTMLLIElement | null {
   ) as HTMLLIElement;
   const deleteButtonElement =
     todoEleemnt.querySelector<HTMLButtonElement>('.task__delete');
+  const completeButtonElement =
+    todoEleemnt.querySelector<HTMLButtonElement>('.task__complited');
 
   if (todoEleemnt) {
     const todoNameElement =
@@ -50,11 +59,22 @@ function createTodo(data: Todo): HTMLLIElement | null {
     }
   }
 
-	if (deleteButtonElement) {
+  if (deleteButtonElement) {
     deleteButtonElement.addEventListener('click', () => {
       const todoItem = deleteButtonElement.closest('.task');
-			todoItem?.remove()
-			deleteTodo(data)
+      todoItem?.remove();
+      deleteTodo(data);
+    });
+  }
+
+  if (completeButtonElement && completedTodoListElement) {
+    completeButtonElement.addEventListener('click', () => {
+      const todoItem = completeButtonElement.closest('.task');
+      if (todoItem) {
+        data.completed = true;
+        renderTodo(data, completedTodoListElement);
+        saveTodos(todos);
+      }
     });
   }
 
@@ -62,7 +82,9 @@ function createTodo(data: Todo): HTMLLIElement | null {
 }
 
 function deleteTodo(todo: Todo): void {
-  const index = todos.findIndex(t => t.name === todo.name && t.date === todo.date);
+  const index = todos.findIndex(
+    (t) => t.name === todo.name && t.date === todo.date,
+  );
   if (index > -1) {
     todos.splice(index, 1);
     saveTodos(todos);
