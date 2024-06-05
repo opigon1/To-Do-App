@@ -81,10 +81,8 @@ function createTodo(data: Todo): HTMLLIElement | null {
   return todoEleemnt;
 }
 
-function deleteTodo(todo: Todo): void {
-  const index = todos.findIndex(
-    (t) => t.name === todo.name && t.date === todo.date,
-  );
+function deleteTodo({id}: Todo): void {
+  const index = todos.findIndex((t) => t.id === id);
   if (index > -1) {
     todos.splice(index, 1);
     saveTodos(todos);
