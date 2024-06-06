@@ -18,13 +18,18 @@ const completedTodoListElement = document.querySelector<HTMLUListElement>(
 const templateElement = document
   .querySelector<HTMLTemplateElement>('#template')
   ?.content.querySelector<HTMLLIElement>('.task');
+const templateCompletedElement = document
+.querySelector<HTMLTemplateElement>('#template-completed')
+?.content.querySelector<HTMLLIElement>('.task');
+const todos: Todo[] = loadTodos('todos');
+const completedTodos: Todo[] = loadTodos('completedTodos');
 
-const todos: Todo[] = loadTodos();
 console.log(todos);
+
 function handleSubmit(e: Event): void {
   e.preventDefault();
 
-  if (inputElement && todoListElement) {
+  if (inputElement && todoListElement && templateElement) {
     const data: Todo = {
       id: uuidv4(),
       name: inputElement?.value,
@@ -32,17 +37,17 @@ function handleSubmit(e: Event): void {
       date: new Date(),
     };
 
-    renderTodo(data, todoListElement);
+    renderTodo(data, todoListElement, templateElement);
     todos.push(data);
-    saveTodos(todos);
+    saveTodos(todos, 'todos');
   }
 
   formElement?.reset();
   if (submitButtonElement) submitButtonElement.disabled = true;
 }
 
-function createTodo(data: Todo): HTMLLIElement | null {
-  const todoEleemnt: HTMLLIElement | null = templateElement?.cloneNode(
+function createTodo(data: Todo, template: HTMLLIElement): HTMLLIElement | null {
+  const todoEleemnt: HTMLLIElement | null = template?.cloneNode(
     true,
   ) as HTMLLIElement;
   const deleteButtonElement =
@@ -63,46 +68,62 @@ function createTodo(data: Todo): HTMLLIElement | null {
     deleteButtonElement.addEventListener('click', () => {
       const todoItem = deleteButtonElement.closest('.task');
       todoItem?.remove();
-      deleteTodo(data);
+      if (data.completed === true) {
+        deleteTodo(data, completedTodos, 'completedTodos');
+      } else if (data.completed === false) {
+        deleteTodo(data, todos, 'todos');
+      }
     });
   }
 
-  if (completeButtonElement && completedTodoListElement) {
+  if (completeButtonElement) {
     completeButtonElement.addEventListener('click', () => {
-      const todoItem = completeButtonElement.closest('.task');
-      if (todoItem) {
-        data.completed = true;
-        renderTodo(data, completedTodoListElement);
-        saveTodos(todos);
-      }
+      handleCompletedTodo(data);
+      const todoItem = deleteButtonElement?.closest('.task');
+      data.completed = true;
+      completedTodos.push(data);
+      todoItem?.remove();
+      saveTodos(completedTodos, 'completedTodos');
     });
   }
 
   return todoEleemnt;
 }
 
-function deleteTodo({id}: Todo): void {
-  const index = todos.findIndex((t) => t.id === id);
+function deleteTodo(
+  { id }: Todo,
+  localStorageArr: Todo[],
+  localStorageKey: string,
+): void {
+  const index = localStorageArr.findIndex((t) => t.id === id);
+  console.log(index);
   if (index > -1) {
-    todos.splice(index, 1);
-    saveTodos(todos);
+    localStorageArr.splice(index, 1);
+    saveTodos(localStorageArr, localStorageKey);
   }
 }
 
-function renderTodo(data: Todo, container: HTMLUListElement) {
-  const todoElement = createTodo(data);
+function handleCompletedTodo(data: Todo) {
+  deleteTodo(data, todos, 'todos');
+  if (completedTodoListElement && templateCompletedElement) {
+    renderTodo(data, completedTodoListElement, templateCompletedElement);
+  }
+}
+
+function renderTodo(data: Todo, container: HTMLUListElement, template: HTMLLIElement) {
+  const todoElement = createTodo(data, template);
 
   if (todoElement) {
     container.append(todoElement);
   }
 }
 
-function saveTodos(todos: Todo[]): void {
-  localStorage.setItem('todos', JSON.stringify(todos));
+function saveTodos(todos: Todo[], key: string): void {
+  localStorage.setItem(key, JSON.stringify(todos));
 }
 
-function loadTodos(): Todo[] {
-  const todosJson = localStorage.getItem('todos');
+function loadTodos(key: string): Todo[] {
+  const todosJson = localStorage.getItem(key);
 
   if (todosJson) {
     return JSON.parse(todosJson) as Todo[];
@@ -111,9 +132,17 @@ function loadTodos(): Todo[] {
   return [];
 }
 
-if (todoListElement) {
+if (todoListElement && templateElement) {
   document.addEventListener('DOMContentLoaded', () => {
-    todos.forEach((todo) => renderTodo(todo, todoListElement));
+    todos.forEach((todo) => renderTodo(todo, todoListElement, templateElement));
+  });
+}
+
+if (completedTodoListElement && templateCompletedElement) {
+  document.addEventListener('DOMContentLoaded', () => {
+    completedTodos.forEach((completedTodos) =>
+      renderTodo(completedTodos, completedTodoListElement, templateCompletedElement),
+    );
   });
 }
 
