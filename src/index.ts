@@ -19,12 +19,10 @@ const templateElement = document
   .querySelector<HTMLTemplateElement>('#template')
   ?.content.querySelector<HTMLLIElement>('.task');
 const templateCompletedElement = document
-.querySelector<HTMLTemplateElement>('#template-completed')
-?.content.querySelector<HTMLLIElement>('.task');
+  .querySelector<HTMLTemplateElement>('#template-completed')
+  ?.content.querySelector<HTMLLIElement>('.task');
 const todos: Todo[] = loadTodos('todos');
 const completedTodos: Todo[] = loadTodos('completedTodos');
-
-console.log(todos);
 
 function handleSubmit(e: Event): void {
   e.preventDefault();
@@ -54,37 +52,53 @@ function createTodo(data: Todo, template: HTMLLIElement): HTMLLIElement | null {
     todoEleemnt.querySelector<HTMLButtonElement>('.task__delete');
   const completeButtonElement =
     todoEleemnt.querySelector<HTMLButtonElement>('.task__complited');
+  const editButtonElement =
+    todoEleemnt.querySelector<HTMLButtonElement>('.task__edit');
 
   if (todoEleemnt) {
     const todoNameElement =
-      todoEleemnt.querySelector<HTMLParagraphElement>('.task__name');
+      todoEleemnt.querySelector<HTMLInputElement>('.task__name');
 
     if (todoNameElement) {
-      todoNameElement.textContent = data.name;
+      todoNameElement.value = data.name;
     }
-  }
 
-  if (deleteButtonElement) {
-    deleteButtonElement.addEventListener('click', () => {
-      const todoItem = deleteButtonElement.closest('.task');
-      todoItem?.remove();
-      if (data.completed === true) {
-        deleteTodo(data, completedTodos, 'completedTodos');
-      } else if (data.completed === false) {
-        deleteTodo(data, todos, 'todos');
-      }
-    });
-  }
+    if (deleteButtonElement) {
+      deleteButtonElement.addEventListener('click', () => {
+        const todoItem = deleteButtonElement.closest('.task');
+        todoItem?.remove();
+        if (data.completed === true) {
+          deleteTodo(data, completedTodos, 'completedTodos');
+        } else if (data.completed === false) {
+          deleteTodo(data, todos, 'todos');
+        }
+      });
+    }
 
-  if (completeButtonElement) {
-    completeButtonElement.addEventListener('click', () => {
-      handleCompletedTodo(data);
-      const todoItem = deleteButtonElement?.closest('.task');
-      data.completed = true;
-      completedTodos.push(data);
-      todoItem?.remove();
-      saveTodos(completedTodos, 'completedTodos');
-    });
+    if (completeButtonElement) {
+      completeButtonElement.addEventListener('click', () => {
+        handleCompletedTodo(data);
+        const todoItem = deleteButtonElement?.closest('.task');
+        data.completed = true;
+        completedTodos.push(data);
+        todoItem?.remove();
+        saveTodos(completedTodos, 'completedTodos');
+      });
+    }
+
+    if (editButtonElement && todoNameElement && inputElement) {
+      editButtonElement.addEventListener('click', () => {
+        if ((editButtonElement.textContent === 'Редактировать')) {
+          todoNameElement.disabled = false;
+          editButtonElement.textContent = 'Сохранить';
+        } else if ((editButtonElement.textContent === 'Сохранить')) {
+          todoNameElement.disabled = true;
+          data.name = todoNameElement.value
+          saveTodos(todos, 'todos');
+          editButtonElement.textContent = 'Редактировать';
+        }
+      });
+    }
   }
 
   return todoEleemnt;
@@ -110,7 +124,11 @@ function handleCompletedTodo(data: Todo) {
   }
 }
 
-function renderTodo(data: Todo, container: HTMLUListElement, template: HTMLLIElement) {
+function renderTodo(
+  data: Todo,
+  container: HTMLUListElement,
+  template: HTMLLIElement,
+) {
   const todoElement = createTodo(data, template);
 
   if (todoElement) {
@@ -141,7 +159,11 @@ if (todoListElement && templateElement) {
 if (completedTodoListElement && templateCompletedElement) {
   document.addEventListener('DOMContentLoaded', () => {
     completedTodos.forEach((completedTodos) =>
-      renderTodo(completedTodos, completedTodoListElement, templateCompletedElement),
+      renderTodo(
+        completedTodos,
+        completedTodoListElement,
+        templateCompletedElement,
+      ),
     );
   });
 }
