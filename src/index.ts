@@ -7,6 +7,13 @@ type Todo = {
   date: Date;
 };
 
+const taskCounterCompleted = document.querySelector<HTMLTitleElement>(
+  '.task__counter_type_completed',
+);
+const taskCounterInCompleted = document.querySelector<HTMLTitleElement>(
+  '.task__counter_type_incompleted',
+);
+
 const submitButtonElement =
   document.querySelector<HTMLButtonElement>('.button');
 const inputElement = document.querySelector<HTMLInputElement>('.input');
@@ -24,6 +31,18 @@ const templateCompletedElement = document
 const todos: Todo[] = loadTodos('todos');
 const completedTodos: Todo[] = loadTodos('completedTodos');
 
+function updateTaskCounter() {
+  if (taskCounterInCompleted) {
+    taskCounterInCompleted.textContent = `Незавершённые: ${todos.length}`;
+  }
+
+  if (taskCounterCompleted) {
+    taskCounterCompleted.textContent = `Завершённые: ${completedTodos.length}`;
+  }
+}
+
+updateTaskCounter();
+
 function handleSubmit(e: Event): void {
   e.preventDefault();
 
@@ -38,6 +57,7 @@ function handleSubmit(e: Event): void {
     renderTodo(data, todoListElement, templateElement);
     todos.push(data);
     saveTodos(todos, 'todos');
+    updateTaskCounter();
   }
 
   formElement?.reset();
@@ -83,24 +103,24 @@ function createTodo(data: Todo, template: HTMLLIElement): HTMLLIElement | null {
         completedTodos.push(data);
         todoItem?.remove();
         saveTodos(completedTodos, 'completedTodos');
+        updateTaskCounter();
       });
     }
 
     if (editButtonElement && todoNameElement && inputElement) {
       editButtonElement.addEventListener('click', () => {
-        if ((editButtonElement.textContent === 'Редактировать')) {
+        if (editButtonElement.textContent === 'Редактировать') {
           todoNameElement.disabled = false;
           editButtonElement.textContent = 'Сохранить';
-        } else if ((editButtonElement.textContent === 'Сохранить')) {
+        } else if (editButtonElement.textContent === 'Сохранить') {
           todoNameElement.disabled = true;
-          data.name = todoNameElement.value
+          data.name = todoNameElement.value;
           saveTodos(todos, 'todos');
           editButtonElement.textContent = 'Редактировать';
         }
       });
     }
   }
-
   return todoEleemnt;
 }
 
@@ -110,11 +130,11 @@ function deleteTodo(
   localStorageKey: string,
 ): void {
   const index = localStorageArr.findIndex((t) => t.id === id);
-  console.log(index);
   if (index > -1) {
     localStorageArr.splice(index, 1);
     saveTodos(localStorageArr, localStorageKey);
   }
+  updateTaskCounter();
 }
 
 function handleCompletedTodo(data: Todo) {
