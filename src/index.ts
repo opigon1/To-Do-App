@@ -18,9 +18,11 @@ const submitButtonElement =
   document.querySelector<HTMLButtonElement>('.button');
 const inputElement = document.querySelector<HTMLInputElement>('.input');
 const formElement = document.querySelector<HTMLFormElement>('.form');
-const todoListElement = document.querySelector<HTMLUListElement>('.task-list');
+const todoListElement = document.querySelector<HTMLUListElement>(
+  '.task-list_type_incompleted',
+);
 const completedTodoListElement = document.querySelector<HTMLUListElement>(
-  '.complited-section__list',
+  '.task-list_type_completed',
 );
 const templateElement = document
   .querySelector<HTMLTemplateElement>('#template')
@@ -33,11 +35,11 @@ const completedTodos: Todo[] = loadTodos('completedTodos');
 
 function updateTaskCounter() {
   if (taskCounterInCompleted) {
-    taskCounterInCompleted.textContent = `Незавершённые: ${todos.length}`;
+    taskCounterInCompleted.textContent = `Незавершённые - ${todos.length}`;
   }
 
   if (taskCounterCompleted) {
-    taskCounterCompleted.textContent = `Завершённые: ${completedTodos.length}`;
+    taskCounterCompleted.textContent = `Завершённые - ${completedTodos.length}`;
   }
 }
 
@@ -74,6 +76,7 @@ function createTodo(data: Todo, template: HTMLLIElement): HTMLLIElement | null {
     todoEleemnt.querySelector<HTMLButtonElement>('.task__complited');
   const editButtonElement =
     todoEleemnt.querySelector<HTMLButtonElement>('.task__edit');
+  console.log(editButtonElement);
 
   if (todoEleemnt) {
     const todoNameElement =
@@ -107,7 +110,7 @@ function createTodo(data: Todo, template: HTMLLIElement): HTMLLIElement | null {
       });
     }
 
-    if (editButtonElement && todoNameElement && inputElement) {
+    if (editButtonElement && todoNameElement) {
       editButtonElement.addEventListener('click', () => {
         if (editButtonElement.textContent === 'Редактировать') {
           todoNameElement.disabled = false;
@@ -152,7 +155,7 @@ function renderTodo(
   const todoElement = createTodo(data, template);
 
   if (todoElement) {
-    container.append(todoElement);
+    container.prepend(todoElement);
   }
 }
 

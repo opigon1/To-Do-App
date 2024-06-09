@@ -12,28 +12,37 @@
     <title>To-Do-App</title>
   </head>
   <body>
-    <div>
-      <form action="#" class="form">
-        <input type="text" class="input" />
-        <button type="submit" disabled class="button">Добавить</button>
-      </form>
-      <div>
-        <h2 class="task__counter task__counter_type_incompleted"></h2>
-        <ul class="task-list"></ul>
+    <div class="content">
+      <div class="content-cover">
+        <form action="#" class="form">
+          <input
+            type="text"
+            class="input"
+            placeholder="Добавить новую задачу"
+          />
+          <button type="submit" disabled class="button"></button>
+        </form>
+
+        <section class="incompleted-section">
+          <div>
+            <h2 class="task__counter task__counter_type_incompleted"></h2>
+            <ul class="task-list task-list_type_incompleted"></ul>
+          </div>
+        </section>
+
+        <section class="incomplited-section">
+          <h2 class="task__counter task__counter_type_completed"></h2>
+          <ul class="task-list task-list_type_completed"></ul>
+        </section>
       </div>
     </div>
-
-    <section class="complited-section">
-      <h2 class="task__counter task__counter_type_completed"></h2>
-      <ul class="complited-section__list"></ul>
-    </section>
 
     <template id="template">
       <li class="task">
         <input class="task__name" value="" disabled type="text" />
         <div>
-          <button class="task__complited" type="button">Завершить</button>
-          <button class="task__delete" type="button">Удалить</button>
+          <button class="task-button task__complited" type="button"></button>
+          <button class="task-button task__delete" type="button"></button>
           <button class="task__edit" type="button">Редактировать</button>
         </div>
       </li>
@@ -43,7 +52,7 @@
       <li class="task">
         <input class="task__name" value="" disabled type="text" />
         <div>
-          <button class="task__delete" type="button">Удалить</button>
+          <button class="task__delete" type="button"></button>
         </div>
       </li>
     </template>
