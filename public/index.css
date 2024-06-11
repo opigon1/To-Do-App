@@ -25,10 +25,11 @@ body {
   margin-top: 110px;
   background-color: rgb(29, 24, 37);
   border-radius: 20px;
+  margin-bottom: 100px;
 }
 
 .form {
-  margin-top: 50px;
+  margin-top: 46px;
   display: flex;
   align-items: center;
 }
@@ -72,24 +73,37 @@ body {
   font-size: 16px;
   color: white;
   font-weight: normal;
-  margin-left: 65px;
   margin-top: 60px;
   margin-bottom: 17px;
+}
+
+.incompleted-section {
+  max-width: 432px;
+  width: 100%;
+  margin-left: 65px;
+}
+
+.completed-section {
+  max-width: 432px;
+  width: 100%;
+  margin-left: 65px;
+  margin-bottom: 55px;
 }
 
 .task-list {
   display: flex;
   flex-direction: column;
   list-style: none;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   row-gap: 16px;
 }
 
 .task {
-  margin: 0 auto;
+  position: relative;
   max-width: 432px;
   width: 100%;
+  margin: 0 auto;
   height: 75px;
   display: flex;
   justify-content: space-between;
@@ -106,14 +120,13 @@ body {
 .task__name {
   background-color: transparent;
   border: none;
+  padding-left: 21px;
+  color: white;
 }
 
-.task__complited {
-  width: 25px;
-  height: 25px;
-  background-image: url(./img/Check.svg);
-  background-color: transparent;
-  border: none;
+.task__name:enabled {
+  outline: 1px solid rgb(158, 120, 207);
+  border-radius: 5px;
 }
 
 .task__complited {
@@ -138,22 +151,17 @@ body {
   cursor: pointer;
 }
 
-/* .task__edit {
-  width: 30px;
-  height: 30px;
-  background-image: url(./img/edit-2-svgrepo-com.svg);
-  background-size: 30px 30px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-} */
+.task__wrapper {
+  padding-right: 21px;
+}
 
 .task__edit {
+  position: absolute;
+  top: 70%;
+  right: 10px;
   background-color: transparent;
   border: none;
-  color: white;
+  color: rgb(158, 120, 207);
   font-size: 10px;
   cursor: pointer;
 }

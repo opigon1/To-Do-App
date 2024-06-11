@@ -24,13 +24,11 @@
         </form>
 
         <section class="incompleted-section">
-          <div>
-            <h2 class="task__counter task__counter_type_incompleted"></h2>
-            <ul class="task-list task-list_type_incompleted"></ul>
-          </div>
+          <h2 class="task__counter task__counter_type_incompleted"></h2>
+          <ul class="task-list task-list_type_incompleted"></ul>
         </section>
 
-        <section class="incomplited-section">
+        <section class="completed-section">
           <h2 class="task__counter task__counter_type_completed"></h2>
           <ul class="task-list task-list_type_completed"></ul>
         </section>
@@ -40,7 +38,7 @@
     <template id="template">
       <li class="task">
         <input class="task__name" value="" disabled type="text" />
-        <div>
+        <div class="task__wrapper">
           <button class="task-button task__complited" type="button"></button>
           <button class="task-button task__delete" type="button"></button>
           <button class="task__edit" type="button">Редактировать</button>
@@ -51,7 +49,7 @@
     <template id="template-completed">
       <li class="task">
         <input class="task__name" value="" disabled type="text" />
-        <div>
+        <div class="task__wrapper">
           <button class="task__delete" type="button"></button>
         </div>
       </li>

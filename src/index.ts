@@ -116,10 +116,14 @@ function createTodo(data: Todo, template: HTMLLIElement): HTMLLIElement | null {
           todoNameElement.disabled = false;
           editButtonElement.textContent = 'Сохранить';
         } else if (editButtonElement.textContent === 'Сохранить') {
-          todoNameElement.disabled = true;
-          data.name = todoNameElement.value;
-          saveTodos(todos, 'todos');
-          editButtonElement.textContent = 'Редактировать';
+          if (todoNameElement.value.trim() === '') {
+            alert('Значение не может быть пустым!');
+          } else {
+            todoNameElement.disabled = true;
+            data.name = todoNameElement.value;
+            saveTodos(todos, 'todos');
+            editButtonElement.textContent = 'Редактировать';
+          }
         }
       });
     }
