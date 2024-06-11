@@ -118,10 +118,18 @@ body {
 }
 
 .task__name {
+  max-width: 300px;
+  width: 100%;
   background-color: transparent;
   border: none;
   padding-left: 21px;
   color: white;
+  text-overflow: ellipsis;
+}
+
+.task__name_type_completed {
+  color: rgb(120, 207, 176);
+  text-decoration: line-through;
 }
 
 .task__name:enabled {
