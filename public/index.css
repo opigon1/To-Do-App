@@ -22,7 +22,7 @@ body {
   max-width: 583px;
   min-height: 758px;
   width: 100%;
-  margin-top: 110px;
+  margin: 110px 10px 0;
   background-color: rgb(29, 24, 37);
   border-radius: 20px;
   margin-bottom: 100px;
@@ -91,6 +91,8 @@ body {
 }
 
 .task-list {
+  max-width: 432px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   list-style: none;
@@ -118,8 +120,6 @@ body {
 }
 
 .task__name {
-  max-width: 300px;
-  width: 100%;
   background-color: transparent;
   border: none;
   padding-left: 21px;
