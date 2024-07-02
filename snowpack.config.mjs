@@ -13,6 +13,7 @@ export default {
       },
     ],
   ],
+  base: '/To-Do-App/',
   routes: [
     /* Enable an SPA Fallback in development: */
     // {"match": "routes", "src": ".*", "dest": "/index.html"},
@@ -28,6 +29,7 @@ export default {
     /* ... */
   },
   buildOptions: {
-    /* ... */
+    baseUrl: '/To-Do-App',
+    out: 'build',
   },
 };

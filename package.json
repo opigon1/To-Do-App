@@ -4,8 +4,11 @@
     "build": "snowpack build",
     "test": "echo \"This template does not include a test runner by default.\" && exit 1",
     "format": "prettier --write \"src/**/*.{ts,js}\"",
-    "lint": "prettier --check \"src/**/*.{ts,js}\""
+    "lint": "prettier --check \"src/**/*.{ts,js}\"",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
+  "homepage": "https://opigon1.github.io/To-Do-App/",
   "dependencies": {
     "canvas-confetti": "^1.2.0",
     "uuid": "^9.0.1"
@@ -15,6 +18,7 @@
     "@types/canvas-confetti": "^1.0.0",
     "@types/snowpack-env": "^2.3.3",
     "@types/uuid": "^9.0.8",
+    "gh-pages": "^6.1.1",
     "prettier": "^2.2.1",
     "snowpack": "^3.3.7",
     "typescript": "^4.2.4"
