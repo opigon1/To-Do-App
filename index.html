@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Web site created using create-snowpack-app"
+    />
+    <link rel="stylesheet" type="text/css" href="/index.css" />
+    <script type="module" src="/dist/index.js"></script>
+    <title>To-Do-App</title>
+  </head>
+  <body>
+    <div class="content">
+      <div class="content-cover">
+        <form action="#" class="form">
+          <input
+            type="text"
+            class="input"
+            placeholder="Добавить новую задачу"
+          />
+          <button type="submit" disabled class="button"></button>
+        </form>
+
+        <section class="incompleted-section">
+          <h2 class="task__counter task__counter_type_incompleted"></h2>
+          <ul class="task-list task-list_type_incompleted"></ul>
+        </section>
+
+        <section class="completed-section">
+          <h2 class="task__counter task__counter_type_completed"></h2>
+          <ul class="task-list task-list_type_completed"></ul>
+        </section>
+      </div>
+    </div>
+
+    <template id="template">
+      <li class="task">
+        <input class="task__name" value="" disabled type="text" />
+        <div class="task__wrapper">
+          <button class="task-button task__complited" type="button"></button>
+          <button class="task-button task__delete" type="button"></button>
+          <button class="task__edit" type="button">Редактировать</button>
+        </div>
+      </li>
+    </template>
+
+    <template id="template-completed">
+      <li class="task">
+        <input class="task__name task__name_type_completed" value="" disabled type="text" />
+        <div class="task__wrapper">
+          <button class="task__delete" type="button"></button>
+        </div>
+      </li>
+    </template>
+
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+  </body>
+</html>
